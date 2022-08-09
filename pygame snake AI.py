@@ -1,23 +1,11 @@
 import pygame
-import time
 import random
 
 from pygame.locals import (
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_a,
-    K_s,
-    K_w,
-    K_d,
     K_q,
     K_c,
-    K_ESCAPE,
     KEYDOWN,
     QUIT,
-    K_PAUSE,
-    K_SPACE
 )
 
 pygame.init()
@@ -49,7 +37,7 @@ def ai_score(score):
     display.blit(value, [0, 0])
 
 
-def ai_snake(snake_block, snake_list):
+def ai_snake(snake_list):
     for x in snake_list:
         pygame.draw.rect(display, black, [x[0], x[1], snake_block, snake_block])
 
@@ -71,7 +59,7 @@ def ai_next_move(snake_head, snake_list, food_pos):
             return 0, -snake_block
 
     direction = None
-    while direction == None:
+    while direction is None:
         direction = get_free_direction(snake_head, snake_list)
 
     print(direction)
@@ -157,8 +145,8 @@ def game_loop():
     snake_list = []
     length_of_snake = 1
 
-    foodx = round(random.randrange(0, display_width - snake_block) / 10.0) * 10.0
-    foody = round(random.randrange(0, display_height - snake_block) / 10.0) * 10.0
+    food_x = round(random.randrange(0, display_width - snake_block) / 10.0) * 10.0
+    food_y = round(random.randrange(0, display_height - snake_block) / 10.0) * 10.0
 
     while not game_over:
 
@@ -184,11 +172,11 @@ def game_loop():
         if x1 >= display_width or x1 < 0 or y1 >= display_height or y1 < 0:
             game_close = True
 
-        x1_change, y1_change = ai_next_move(snake_head, snake_list, [foodx, foody])
+        x1_change, y1_change = ai_next_move(snake_head, snake_list, [food_x, food_y])
         x1 += x1_change
         y1 += y1_change
         display.fill(blue)
-        pygame.draw.rect(display, green, [foodx, foody, snake_block, snake_block])
+        pygame.draw.rect(display, green, [food_x, food_y, snake_block, snake_block])
         snake_head = [x1, y1]
         snake_list.append(snake_head)
         if len(snake_list) > length_of_snake:
@@ -198,17 +186,17 @@ def game_loop():
             if x == snake_head:
                 game_close = True
 
-        ai_snake(snake_block, snake_list)
+        ai_snake(snake_list)
         ai_score(length_of_snake - 1)
 
         pygame.display.update()
 
-        if x1 == foodx and y1 == foody:
-            foodx = round(random.randrange(0, display_width - snake_block) / 10.0) * 10.0
-            foody = round(random.randrange(0, display_height - snake_block) / 10.0) * 10.0
-            while [foodx, foody] in snake_list:
-                foodx = round(random.randrange(0, display_width - snake_block) / 10.0) * 10.0
-                foody = round(random.randrange(0, display_height - snake_block) / 10.0) * 10.0
+        if x1 == food_x and y1 == food_y:
+            food_x = round(random.randrange(0, display_width - snake_block) / 10.0) * 10.0
+            food_y = round(random.randrange(0, display_height - snake_block) / 10.0) * 10.0
+            while [food_x, food_y] in snake_list:
+                food_x = round(random.randrange(0, display_width - snake_block) / 10.0) * 10.0
+                food_y = round(random.randrange(0, display_height - snake_block) / 10.0) * 10.0
             length_of_snake += 1
 
         clock.tick(snake_speed)
@@ -217,5 +205,5 @@ def game_loop():
     quit()
 
 
-while (game_loop()):
+while game_loop():
     continue

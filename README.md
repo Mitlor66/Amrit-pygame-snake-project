@@ -8,6 +8,10 @@ Fully working version of Snake
 
 Increase of screen size  
 
-## V2.0
+# V2.0
 
 Creation of a basic AI + skeleton code to fill
+
+## V2.1
+
+Cleaning of variables names, non-used variables, function variables.
